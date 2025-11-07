@@ -20,3 +20,8 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
         default_batch_fetch_size: 1000
     open-in-view: false
+
+  jwt:
+    secret: ${PROD.jwt.secret}
+    access-token-validity: ${PROD.jwt.access-token-validity}
+    refresh-token-validity: ${PROD.jwt.refresh-token-validity}
