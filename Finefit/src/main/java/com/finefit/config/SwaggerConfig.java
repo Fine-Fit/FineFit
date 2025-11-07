@@ -27,7 +27,7 @@ public class SwaggerConfig {
                     .in(SecurityScheme.In.HEADER)
                     .bearerFormat("JWT")))
         .info(new Info()
-            .title("Dear Birdy API")
+            .title("FineFit API")
             .version("API v1.0")
             .description("API documentation"));
   }
