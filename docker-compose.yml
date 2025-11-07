@@ -1,0 +1,41 @@
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    env_file:
+      - ./data/mysql/env.mysql
+    restart: always
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 10
+    volumes:
+      - finefit_data:/var/lib/mysql
+      - ./data/mysql/schema-mysql.sql:/docker-entrypoint-initdb.d/schema-mysql.sql
+    networks:
+      - finefit
+
+  api:
+    build:
+      context: Finefit
+      dockerfile: Dockerfile
+    container_name: api
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: always
+    environment:
+      ACTIVE_PROFILE: prod
+    ports:
+      - "8080:8080"
+    networks:
+      - finefit
+
+volumes:
+  finefit_data:
+
+networks:
+  finefit:
+    driver: bridge
