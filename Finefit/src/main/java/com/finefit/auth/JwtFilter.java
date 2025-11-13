@@ -96,7 +96,6 @@ public class JwtFilter extends OncePerRequestFilter {
         || requestURI.matches("/swagger-ui/.*")
         || requestURI.equals("/swagger-ui.html")
         || requestURI.matches("/swagger-resources/.*")
-        || requestURI.startsWith("/admin")
         || requestURI.startsWith("/counsel")
         || requestURI.startsWith("/user");
   }
