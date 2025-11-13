@@ -2,14 +2,12 @@ package com.finefit.domain.entity;
 
 import com.finefit.converter.ExerciseConverter;
 import com.finefit.converter.ExerciseGoalConverter;
-import com.finefit.converter.PainAreaConverter;
 import com.finefit.domain.model.type.DrinkingFrequencyType;
 import com.finefit.domain.model.type.ExerciseFrequencyType;
 import com.finefit.domain.model.type.ExerciseGoalType;
 import com.finefit.domain.model.type.ExerciseStyleType;
 import com.finefit.domain.model.type.ExerciseType;
 import com.finefit.domain.model.type.GenderType;
-import com.finefit.domain.model.type.PainAreaType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
@@ -113,13 +111,6 @@ public class CounselEntity {
   /** 현재 또는 과거 질환이나 통증 */
   private String medicalHistory;
 
-  /** 통증이 있는 부위 (복수 선택 가능) */
-  @Column(columnDefinition = "JSON")
-  @Convert(converter = PainAreaConverter.class)
-  private Map<PainAreaType, Boolean> painArea;
-
-  /** 통증 부위 - 기타 내용 */
-  private String painAreaEtc;
 
   /** 복용 중인 약이나 주의해야 할 사항 */
   private String medicationOrPrecautions;

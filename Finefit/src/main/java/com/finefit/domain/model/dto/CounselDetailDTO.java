@@ -7,7 +7,6 @@ import com.finefit.domain.model.type.ExerciseGoalType;
 import com.finefit.domain.model.type.ExerciseStyleType;
 import com.finefit.domain.model.type.ExerciseType;
 import com.finefit.domain.model.type.GenderType;
-import com.finefit.domain.model.type.PainAreaType;
 import java.time.LocalDate;
 import java.util.Map;
 import lombok.Builder;
@@ -151,28 +150,6 @@ public class CounselDetailDTO {
   /** 현재 또는 과거 질환이나 통증 */
   private String medicalHistory;
 
-  /** 통증이 있는 부위 (복수 선택 가능)
-   *
-   *   SHOULDER("어깨"),
-   *   KNEE("무릎"),
-   *   WAIST("허리"),
-   *   NECK("목"),
-   *   ETC("기타");
-   *
-   *
-   *   예시)
-   *   SHOULDER : true
-   *   KNEE : false
-   *   WAIST : true
-   *   NECK : true
-   *   ETC : false
-   *
-   * */
-  private Map<PainAreaType, Boolean> painArea;
-
-  /** 통증 부위 - 기타 내용 */
-  private String painAreaEtc;
-
   /** 복용 중인 약이나 주의해야 할 사항 */
   private String medicationOrPrecautions;
 
@@ -225,8 +202,6 @@ public class CounselDetailDTO {
         .dietExperience(counselDTO.getDietExperience())
         .dietGoal(counselDTO.getDietGoal())
         .medicalHistory(counselDTO.getMedicalHistory())
-        .painArea(counselDTO.getPainArea())
-        .painAreaEtc(counselDTO.getPainAreaEtc())
         .medicationOrPrecautions(counselDTO.getMedicationOrPrecautions())
         .occupationAndActivity(counselDTO.occupationAndActivity)
         .sleepInfo(counselDTO.getSleepInfo())
@@ -261,8 +236,6 @@ public class CounselDetailDTO {
         .dietExperience(counsel.getDietExperience())
         .dietGoal(counsel.getDietGoal())
         .medicalHistory(counsel.getMedicalHistory())
-        .painArea(counsel.getPainArea())
-        .painAreaEtc(counsel.getPainAreaEtc())
         .medicationOrPrecautions(counsel.getMedicationOrPrecautions())
         .occupationAndActivity(counsel.getOccupationAndActivity())
         .sleepInfo(counsel.getSleepInfo())
