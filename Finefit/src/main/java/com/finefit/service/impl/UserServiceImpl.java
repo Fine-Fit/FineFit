@@ -3,6 +3,7 @@ package com.finefit.service.impl;
 import com.finefit.auth.JwtUtil;
 import com.finefit.domain.entity.UserEntity;
 import com.finefit.domain.model.dto.LoginDTO;
+import com.finefit.domain.model.dto.LoginUserDataDTO;
 import com.finefit.domain.model.dto.RegisterDTO;
 import com.finefit.domain.model.dto.ResultResponse;
 import com.finefit.domain.model.dto.UserDTO;
@@ -67,8 +68,8 @@ public class UserServiceImpl implements UserService {
 
     httpServletResponse.addHeader(TokenType.ACCESS.getValue(), "Bearer " + access);
     httpServletResponse.addCookie(jwtUtil.setCookie(refresh));
-
-    return ResultResponse.of(SuccessResultType.SUCCESS_ADMIN_LOGIN);
+    LoginUserDataDTO loginUserData = LoginUserDataDTO.toLoginUserDataDTO(user);
+    return new ResultResponse(SuccessResultType.SUCCESS_ADMIN_LOGIN, loginUserData);
   }
 
   @Override
