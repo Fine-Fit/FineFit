@@ -10,8 +10,10 @@ import java.io.IOException;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Slf4j
@@ -28,7 +30,7 @@ public class JwtFilter extends OncePerRequestFilter {
     log.info("request uri >>> {}", request.getRequestURI());
 
     // 인증이 필요없는 경로 토큰 검증 제외
-    if (isExcludedPath(request.getRequestURI())) {
+    if (isAllowedRequest(request)) {
       log.info("토큰 검증 제외 경로");
       filterChain.doFilter(request, response);
       return;
@@ -88,15 +90,30 @@ public class JwtFilter extends OncePerRequestFilter {
     response.getWriter().write(objectMapper.writeValueAsString(body));
   }
 
-  // Jwt 검증 제외 경로
-  private boolean isExcludedPath(String requestURI) {
-    return requestURI.equals("/")
-        || requestURI.matches("/v3/api-docs/.*")
-        || requestURI.matches("/v3/api-docs")
-        || requestURI.matches("/swagger-ui/.*")
-        || requestURI.equals("/swagger-ui.html")
-        || requestURI.matches("/swagger-resources/.*")
-        || requestURI.startsWith("/counsel")
-        || requestURI.startsWith("/user");
+  private boolean isAllowedRequest(HttpServletRequest request) {
+    AntPathMatcher pathMatcher = new AntPathMatcher();
+    String path = request.getRequestURI();
+
+    // 1. Options 요청 검증
+    if (HttpMethod.OPTIONS.matches(request.getMethod())) {
+      return true;
+    }
+    // 2. 예외 경로 검증
+    if (isExcludedPath(pathMatcher, path)) {
+      return true;
+    }
+
+    return false;
+  }
+
+  private boolean isExcludedPath(AntPathMatcher pathMatcher, String requestURI) {
+
+    return pathMatcher.match("/", requestURI)
+        || pathMatcher.match("/v3/api-docs/**", requestURI)
+        || pathMatcher.match("/swagger-ui/**", requestURI)
+        || pathMatcher.match("/swagger-ui.html", requestURI)
+        || pathMatcher.match("/swagger-resources/**", requestURI)
+        || pathMatcher.match("/counsel/**", requestURI)
+        || pathMatcher.match("/user/**", requestURI);
   }
 }
