@@ -2,6 +2,7 @@ package com.finefit.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.finefit.domain.model.type.TokenType;
+import com.finefit.domain.model.type.UrlType;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,8 +30,17 @@ public class JwtFilter extends OncePerRequestFilter {
 
     log.info("request uri >>> {}", request.getRequestURI());
 
+    if (HttpMethod.OPTIONS.matches(request.getMethod())) {
+      log.info("OPTIONS 요청 - CORS preflight 처리");
+      filterChain.doFilter(request, response);
+      return;  // filterChain 호출하지 않음
+    }
+
     // 인증이 필요없는 경로 토큰 검증 제외
-    if (isAllowedRequest(request)) {
+    AntPathMatcher pathMatcher = new AntPathMatcher();
+    String path = request.getRequestURI();
+
+    if (isExcludedPath(pathMatcher, path)) {
       log.info("토큰 검증 제외 경로");
       filterChain.doFilter(request, response);
       return;
@@ -74,7 +84,7 @@ public class JwtFilter extends OncePerRequestFilter {
     response.setCharacterEncoding("UTF-8");
 
 
-    Map<String, String> body = Map.of("message", "토큰값이 null 입니다.");
+    Map<String, String> body = Map.of("message", "유효하지 않은 토큰 값 입니다.");
     response.getWriter().write(objectMapper.writeValueAsString(body));
   }
 
@@ -85,25 +95,14 @@ public class JwtFilter extends OncePerRequestFilter {
     response.setContentType("application/json");
     response.setCharacterEncoding("UTF-8");
 
+    response.setHeader("Access-Control-Allow-Origin", UrlType.FRONT_LOCAL_URL.getUrl());
+    response.setHeader("Access-Control-Allow-Credentials", "true");
+    response.setHeader("Access-Control-Allow-Methods", "GET,HEAD,POST,DELETE,TRACE,OPTIONS,PATCH,PUT");
+    response.setHeader("Access-Control-Allow-Headers", "*");
+    response.setHeader("Access-Control-Expose-Headers", "access-token, Location");
 
     Map<String, String> body = Map.of("message", "access-token 만료");
     response.getWriter().write(objectMapper.writeValueAsString(body));
-  }
-
-  private boolean isAllowedRequest(HttpServletRequest request) {
-    AntPathMatcher pathMatcher = new AntPathMatcher();
-    String path = request.getRequestURI();
-
-    // 1. Options 요청 검증
-    if (HttpMethod.OPTIONS.matches(request.getMethod())) {
-      return true;
-    }
-    // 2. 예외 경로 검증
-    if (isExcludedPath(pathMatcher, path)) {
-      return true;
-    }
-
-    return false;
   }
 
   private boolean isExcludedPath(AntPathMatcher pathMatcher, String requestURI) {
