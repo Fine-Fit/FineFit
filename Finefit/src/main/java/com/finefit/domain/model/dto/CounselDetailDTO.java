@@ -1,6 +1,7 @@
 package com.finefit.domain.model.dto;
 
 import com.finefit.domain.entity.CounselEntity;
+import com.finefit.domain.model.type.CounselStatusType;
 import com.finefit.domain.model.type.DrinkingFrequencyType;
 import com.finefit.domain.model.type.ExerciseFrequencyType;
 import com.finefit.domain.model.type.ExerciseGoalType;
@@ -179,7 +180,6 @@ public class CounselDetailDTO {
   /** 운동을 방해할 수 있는 요인 */
   private String exerciseObstacles;
 
-
   public static CounselEntity toCounselEntity(CounselDetailDTO counselDTO) {
 
     return CounselEntity.builder()
@@ -210,6 +210,7 @@ public class CounselDetailDTO {
         .drinkingFrequency(counselDTO.getDrinkingFrequency())
         .stressLevel(counselDTO.getStressLevel())
         .exerciseObstacles(counselDTO.getExerciseObstacles())
+        .counselStatus(CounselStatusType.WAITING)
         .createAt(LocalDate.now())
         .build();
   }

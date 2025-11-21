@@ -1,6 +1,7 @@
 package com.finefit.domain.model.dto;
 
 import com.finefit.domain.entity.CounselEntity;
+import com.finefit.domain.model.type.CounselStatusType;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,8 @@ public class CounselDTO {
 
   private String contact;
 
+  private CounselStatusType counselStatus;
+
   private LocalDate createAt;
 
   public static List<CounselDTO> toCounselsDTO(List<CounselEntity> counsel) {
@@ -27,6 +30,7 @@ public class CounselDTO {
           .counselId(counselEntity.getCounselId())
           .name(counselEntity.getName())
           .contact(counselEntity.getContact())
+          .counselStatus(counselEntity.getCounselStatus())
           .createAt(counselEntity.getCreateAt())
           .build();
 

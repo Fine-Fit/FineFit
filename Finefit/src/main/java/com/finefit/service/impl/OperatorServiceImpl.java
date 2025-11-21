@@ -8,6 +8,7 @@ import com.finefit.domain.model.dto.CounselDTO;
 import com.finefit.domain.model.dto.CounselDetailDTO;
 import com.finefit.domain.model.dto.ResultResponse;
 import com.finefit.domain.model.type.ApprovalStatusType;
+import com.finefit.domain.model.type.CounselStatusType;
 import com.finefit.domain.model.type.FailedResultType;
 import com.finefit.domain.model.type.RoleType;
 import com.finefit.domain.model.type.SuccessResultType;
@@ -87,12 +88,31 @@ public class OperatorServiceImpl implements OperatorService {
   }
 
   @Override
-  public ResultResponse getCounsel(HttpServletRequest request) {
+  public ResultResponse getCounsel(HttpServletRequest request, CounselStatusType counselStatus) {
 
-    List<CounselEntity> counsel = counselRepository.findAll();
+    List<CounselEntity> counsel;
+    if (counselStatus == null) {
+      counsel = counselRepository.findAll();
+    } else {
+      counsel = counselRepository.findAllByCounselStatus(counselStatus);
+    }
     List<CounselDTO> counselsList = CounselDTO.toCounselsDTO(counsel);
 
     return new ResultResponse(SuccessResultType.SUCCESS_GET_COUNSEL_LIST, counselsList);
+  }
+
+  @Override
+  public ResultResponse updateCounselStatus(HttpServletRequest request,
+      Long counselId, CounselStatusType counselStatus) {
+
+    UserEntity user = getUserByAccessToken(request);
+    isAboveOrEqual(user, RoleType.MANAGER);
+
+    CounselEntity counsel = counselRepository.findByCounselId(counselId)
+        .orElseThrow(() -> new GlobalException(FailedResultType.FAILED_COUNSEL_NOT_FOUND));
+
+    counselRepository.save(CounselEntity.updateCounselStatus(counsel, counselStatus));
+    return ResultResponse.of(SuccessResultType.SUCCESS_UPDATE_COUNSEL_STATUS);
   }
 
   @Override
