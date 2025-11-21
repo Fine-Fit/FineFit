@@ -2,6 +2,8 @@ package com.finefit.domain.entity;
 
 import com.finefit.converter.ExerciseConverter;
 import com.finefit.converter.ExerciseGoalConverter;
+import com.finefit.domain.model.dto.CounselDetailDTO;
+import com.finefit.domain.model.type.CounselStatusType;
 import com.finefit.domain.model.type.DrinkingFrequencyType;
 import com.finefit.domain.model.type.ExerciseFrequencyType;
 import com.finefit.domain.model.type.ExerciseGoalType;
@@ -136,5 +138,44 @@ public class CounselEntity {
   /** 운동을 방해할 수 있는 요인 */
   private String exerciseObstacles;
 
+  @Enumerated(EnumType.STRING)
+  private CounselStatusType counselStatus;
+
   private LocalDate createAt;
+
+
+  public static CounselEntity updateCounselStatus(CounselEntity counsel, CounselStatusType counselStatus) {
+    return CounselEntity.builder()
+        .counselId(counsel.getCounselId())
+        .name(counsel.getName())
+        .contact(counsel.getContact())
+        .birthDateOrAge(counsel.getBirthDateOrAge())
+        .gender(counsel.getGender())
+        .heightAndWeight(counsel.getHeightAndWeight())
+        .targetWeightOrBody(counsel.getTargetWeightOrBody())
+        .exerciseGoal(counsel.getExerciseGoal())
+        .exerciseGoalEtc(counsel.getExerciseGoalEtc())
+        .targetPeriod(counsel.getTargetPeriod())
+        .hasPtExperience(counsel.isHasPtExperience())
+        .exerciseFrequency(counsel.getExerciseFrequency())
+        .exercise(counsel.getExercise())
+        .exerciseEtc(counsel.getExerciseEtc())
+        .preferredStyle(counsel.getPreferredStyle())
+        .mealsPerDay(counsel.getMealsPerDay())
+        .mealTimeRegularity(counsel.getMealTimeRegularity())
+        .favoriteFoods(counsel.getFavoriteFoods())
+        .dietExperience(counsel.getDietExperience())
+        .dietGoal(counsel.getDietGoal())
+        .medicalHistory(counsel.getMedicalHistory())
+        .medicationOrPrecautions(counsel.getMedicationOrPrecautions())
+        .occupationAndActivity(counsel.getOccupationAndActivity())
+        .sleepInfo(counsel.getSleepInfo())
+        .smoking(counsel.isSmoking())
+        .drinkingFrequency(counsel.getDrinkingFrequency())
+        .stressLevel(counsel.getStressLevel())
+        .exerciseObstacles(counsel.getExerciseObstacles())
+        .counselStatus(counselStatus)
+        .createAt(LocalDate.now())
+        .build();
+  }
 }

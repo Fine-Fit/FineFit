@@ -16,6 +16,7 @@ public enum SuccessResultType {
   SUCCESS_GET_COUNSEL_LIST(HttpStatus.OK, "설문지 조회 성공"),
   SUCCESS_GET_COUNSEL_DETAILS(HttpStatus.OK, "설문지 상세 조회 성공"),
   SUCCESS_REQUEST_COUNSEL(HttpStatus.OK, "설문지 작성 성공"),
+  SUCCESS_UPDATE_COUNSEL_STATUS(HttpStatus.OK, "설문지 상담 상태 수정 성공")
   ;
 
   private final HttpStatus status;
