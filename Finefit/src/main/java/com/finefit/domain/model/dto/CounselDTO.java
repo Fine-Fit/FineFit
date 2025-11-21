@@ -15,7 +15,7 @@ public class CounselDTO {
 
   private String name;
 
-  private String connect;
+  private String contact;
 
   private LocalDate createAt;
 
@@ -26,7 +26,7 @@ public class CounselDTO {
       CounselDTO counselsDTO = CounselDTO.builder()
           .counselId(counselEntity.getCounselId())
           .name(counselEntity.getName())
-          .connect(counselEntity.getContact())
+          .contact(counselEntity.getContact())
           .createAt(counselEntity.getCreateAt())
           .build();
 

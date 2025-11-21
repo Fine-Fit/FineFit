@@ -184,6 +184,7 @@ public class CounselDetailDTO {
 
     return CounselEntity.builder()
         .name(counselDTO.getName())
+        .contact(counselDTO.getContact())
         .birthDateOrAge(counselDTO.getBirthDateOrAge())
         .gender(counselDTO.getGender())
         .heightAndWeight(counselDTO.getHeightAndWeight())
