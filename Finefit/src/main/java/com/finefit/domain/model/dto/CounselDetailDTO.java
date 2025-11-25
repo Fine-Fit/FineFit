@@ -180,6 +180,8 @@ public class CounselDetailDTO {
   /** 운동을 방해할 수 있는 요인 */
   private String exerciseObstacles;
 
+  private CounselStatusType counselStatus;
+
   public static CounselEntity toCounselEntity(CounselDetailDTO counselDTO) {
 
     return CounselEntity.builder()
@@ -245,6 +247,7 @@ public class CounselDetailDTO {
         .drinkingFrequency(counsel.getDrinkingFrequency())
         .stressLevel(counsel.getStressLevel())
         .exerciseObstacles(counsel.getExerciseObstacles())
+        .counselStatus(counsel.getCounselStatus())
         .build();
 
   }
