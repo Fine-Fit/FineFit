@@ -29,6 +29,8 @@ public class ApprovalUserDTO {
 
   private ApprovalStatusType approvalStatus;
 
+  private String createAt;
+
   public static List<ApprovalUserDTO> toApproveUser(List<UserEntity> users) {
     List<ApprovalUserDTO> approveUsers = new ArrayList<>();
 
@@ -42,6 +44,7 @@ public class ApprovalUserDTO {
           .role(user.getRole())
           .team(user.getTeam())
           .approvalStatus(user.getApprovalStatus())
+          .createAt(String.valueOf(user.getCreateAt()))
           .build();
 
       approveUsers.add(approvalUserDTO);
